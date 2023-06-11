@@ -38,6 +38,7 @@ require("lazy").setup({
     "nvim-tree/nvim-tree.lua",
     {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
     "phaazon/hop.nvim",
+    "terrortylor/nvim-comment"
 })
 
 require("catppuccin").setup({
@@ -49,7 +50,7 @@ vim.cmd.colorscheme "catppuccin"
 require("nvim-tree").setup()
 
 local tree_api = require("nvim-tree.api")
-vim.keymap.set('n', '<leader>tt', tree_api.tree.toggle, {})
+vim.keymap.set('n', '<leader>t', tree_api.tree.toggle, {})
 
 require("bufferline").setup()
 
@@ -57,6 +58,8 @@ require("hop").setup()
 -- place this in one of your configuration file(s)
 local hop = require('hop')
 vim.keymap.set('n', '<leader>h', hop.hint_char1, {})
+
+require('nvim_comment').setup({line_mapping = "<leader>cl", operator_mapping = "<leader>c"})
 
 local telescope_api = require("telescope.builtin")
 vim.keymap.set('n', '<leader>ff', telescope_api.find_files, {})
