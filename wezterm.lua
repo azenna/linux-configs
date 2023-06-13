@@ -25,7 +25,42 @@ config.keys = {
     key = '"',
     mods = 'CTRL|SHIFT',
     action = act.SplitVertical { domain = 'CurrentPaneDomain' }
-  }
+  },
+  {
+    key = 't',
+    mods = 'CTRL',
+    action = act.SpawnTab 'DefaultDomain'
+  },
+  {
+    key = 'n',
+    mods = 'CTRL',
+    action = act.ActivateTabRelative(1)
+  },
+  {
+    key = 'p',
+    mods = 'CTRL',
+    action = act.ActivateTabRelative(-1)
+   },
+  {
+    key = 'l',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Left',
+  },
+  {
+    key = 'h',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Right',
+  },
+  {
+    key = 'k',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Up',
+  },
+  {
+    key = 'j',
+    mods = 'CTRL',
+    action = act.ActivatePaneDirection 'Down',
+  },
 }
 
 config.color_scheme = "Catppuccin Mocha"
