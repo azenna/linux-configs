@@ -29,6 +29,11 @@ config.keys = {
   {
     key = 't',
     mods = 'CTRL',
+    action = act.SpawnTab 'CurrentPaneDomain'
+  },
+  {
+    key = 't',
+    mods = 'CTRL|SHIFT',
     action = act.SpawnTab 'DefaultDomain'
   },
   {
@@ -42,12 +47,12 @@ config.keys = {
     action = act.ActivateTabRelative(-1)
    },
   {
-    key = 'l',
+    key = 'h',
     mods = 'CTRL',
     action = act.ActivatePaneDirection 'Left',
   },
   {
-    key = 'h',
+    key = 'l',
     mods = 'CTRL',
     action = act.ActivatePaneDirection 'Right',
   },
@@ -60,6 +65,41 @@ config.keys = {
     key = 'j',
     mods = 'CTRL',
     action = act.ActivatePaneDirection 'Down',
+  },
+  {
+    key = 'j',
+    mods = 'CTRL|SHIFT',
+    action = act.AdjustPaneSize { 'Down', 5 },
+  },
+  {
+    key = 'k',
+    mods = 'CTRL|SHIFT',
+    action = act.AdjustPaneSize { 'Up', 5 },
+  },
+  {
+    key = 'h',
+    mods = 'CTRL|SHIFT',
+    action = act.AdjustPaneSize { 'Left', 5 },
+  },
+  {
+    key = 'l',
+    mods = 'CTRL|SHIFT',
+    action = act.AdjustPaneSize { 'Right', 5 },
+  },
+  {
+    key = 'w',
+    mods = 'CTRL',
+    action = act.CloseCurrentPane { confirm = true },
+  },
+  {
+    key = 'h',
+    mods = 'CTRL|ALT',
+    action = act.MoveTabRelative(-1),
+  },
+  {
+    key = 'm',
+    mods = 'CTRL',
+    action = act.ToggleFullScreen,
   },
 }
 
