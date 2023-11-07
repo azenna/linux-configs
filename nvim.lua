@@ -36,7 +36,10 @@ require("lazy").setup({
     { "nvim-telescope/telescope.nvim", tag="0.1.1",
       dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" }
     },
-    "nvim-tree/nvim-tree.lua",
+    {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    },
     {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
     "phaazon/hop.nvim",
     "terrortylor/nvim-comment",
@@ -52,7 +55,13 @@ require("lazy").setup({
         , "hrsh7th/cmp-cmdline"
         , "saadparwaiz1/cmp_luasnip"
         , "L3MON4D3/LuaSnip" }
-    }
+    },
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        opts = {}, -- this is equalent to setup({}) function
+    },
 })
 
 require("catppuccin").setup({
@@ -61,10 +70,18 @@ require("catppuccin").setup({
 
 vim.cmd.colorscheme "catppuccin"
 
-require("nvim-tree").setup()
+require("telescope").setup({
+  extensions = {
+    file_browser = {
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+    },
+  },
+})
 
-local tree_api = require("nvim-tree.api")
-vim.keymap.set('n', '<leader>t', tree_api.tree.toggle, {})
+require("telescope").load_extension("file_browser")
+
+vim.keymap.set('n', '<leader>t', ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 
 require("bufferline").setup()
 
@@ -128,3 +145,30 @@ require("cmp").setup({
 		{ name = "path" },
 	}),
 })
+
+local highlight = {
+    "Red",
+    "Violet",
+    "Orange",
+    "Cyan",
+    "Yellow",
+    "Blue",
+    "Green",
+}
+
+local hooks = require("ibl.hooks")
+-- create the highlight groups in the highlight setup hook, so they are reset
+-- every time the colorscheme changes
+hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0, "Red", { fg = "#f38ba8" })
+    vim.api.nvim_set_hl(0, "Violet", { fg = "#cba6f7" })
+    vim.api.nvim_set_hl(0, "Orange", { fg = "#fab387" })
+    vim.api.nvim_set_hl(0, "Yellow", { fg = "#f9e2af" })
+    vim.api.nvim_set_hl(0, "Blue", { fg = "#89b4fa" })
+    vim.api.nvim_set_hl(0, "Green", { fg = "#a6e3a1" })
+    vim.api.nvim_set_hl(0, "Cyan", { fg = "#94e2d5" })
+end)
+
+require("ibl").setup({indent = { highlight = highlight }, scope = {enabled = false}})
+
+require("nvim-autopairs").setup()
