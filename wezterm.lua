@@ -18,87 +18,83 @@ config.keys = {
   -- This will create a new split and run your default program inside it
   {
     key = '%',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
   {
     key = '"',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.SplitVertical { domain = 'CurrentPaneDomain' }
   },
   {
     key = 't',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.SpawnTab 'CurrentPaneDomain'
   },
   {
-    key = 't',
-    mods = 'CTRL|SHIFT',
-    action = act.SpawnTab 'DefaultDomain'
-  },
-  {
     key = 'n',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivateTabRelative(1)
   },
   {
     key = 'p',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivateTabRelative(-1)
    },
   {
     key = 'h',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivatePaneDirection 'Left',
   },
   {
     key = 'l',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivatePaneDirection 'Right',
   },
   {
     key = 'k',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivatePaneDirection 'Up',
   },
   {
     key = 'j',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ActivatePaneDirection 'Down',
   },
   {
     key = 'j',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.AdjustPaneSize { 'Down', 5 },
+
   },
   {
     key = 'k',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.AdjustPaneSize { 'Up', 5 },
   },
   {
     key = 'h',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.AdjustPaneSize { 'Left', 5 },
   },
   {
     key = 'l',
-    mods = 'CTRL|SHIFT',
+    mods = 'ALT|SHIFT',
     action = act.AdjustPaneSize { 'Right', 5 },
   },
   {
     key = 'w',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.CloseCurrentPane { confirm = true },
   },
   {
     key = 'h',
-    mods = 'CTRL|ALT',
+    mods = 'ALT|ALT',
     action = act.MoveTabRelative(-1),
   },
   {
     key = 'm',
-    mods = 'CTRL',
+    mods = 'ALT',
     action = act.ToggleFullScreen,
   },
 }

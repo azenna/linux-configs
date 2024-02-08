@@ -7,16 +7,18 @@ vim.o.relativenumber = true
 vim.o.number = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.o.foldmethod = "indent"
+vim.o.scrolloff = 8
 
-vim.keymap.set('n', "<leader>bn", "<cmd>bnext<CR>", {})
-vim.keymap.set('n', "<leader>bp", "<cmd>bprev<CR>", {})
-vim.keymap.set('n', "<leader>bd", "<cmd>bdelete<CR>", {})
-vim.keymap.set('n', "<leader>wh", "<cmd>wincmd h<CR>", {})
-vim.keymap.set('n', "<leader>wj", "<cmd>wincmd j<CR>", {})
-vim.keymap.set('n', "<leader>wk", "<cmd>wincmd k<CR>", {})
-vim.keymap.set('n', "<leader>wl", "<cmd>wincmd l<CR>", {})
-vim.keymap.set('n', "<leader>wv", "<cmd>vs<CR>", {})
-vim.keymap.set('n', "<leader>ws", "<cmd>split<CR>", {})
+vim.keymap.set('n', "<C-n>", "<cmd>bnext<CR>", {})
+vim.keymap.set('n', "<C-p>", "<cmd>bprev<CR>", {})
+vim.keymap.set('n', "<C-A-d>", "<cmd>bdelete<CR>", {})
+vim.keymap.set('n', "<C-h>", "<cmd>wincmd h<CR>", {})
+vim.keymap.set('n', "<C-j>", "<cmd>wincmd j<CR>", {})
+vim.keymap.set('n', "<C-k>", "<cmd>wincmd k<CR>", {})
+vim.keymap.set('n', "<C-l>", "<cmd>wincmd l<CR>", {})
+vim.keymap.set('n', "<C-A-v>", "<cmd>vs<CR>", {})
+vim.keymap.set('n', "<C-A-s>", "<cmd>split<CR>", {})
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -34,7 +36,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     "neovim/nvim-lspconfig",
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-    { "nvim-telescope/telescope.nvim", tag="0.1.1",
+    { "nvim-telescope/telescope.nvim", tag="0.1.4",
       dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" }
     },
     {
@@ -63,17 +65,25 @@ require("lazy").setup({
         event = "InsertEnter",
         opts = {}, -- this is equalent to setup({}) function
     },
+    "stevearc/oil.nvim",
+    "j-morano/buffer_manager.nvim",
+    "karb94/neoscroll.nvim",
 })
 
 local lspconfig = require('lspconfig')
+local lspconfigs = require('lspconfig.configs')
+local lsputil = require('lspconfig.util')
+
 lspconfig.rust_analyzer.setup({
   -- Server-specific settings. See `:help lspconfig-setup`
   settings = {
     ['rust-analyzer'] = {},
   },
 })
-
 lspconfig.clangd.setup({})
+lspconfig.hls.setup({})
+lspconfig.pyright.setup({})
+lspconfig.tsserver.setup({})
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -120,23 +130,22 @@ require("telescope").setup({
 })
 
 require("telescope").load_extension("file_browser")
-
-vim.keymap.set('n', '<leader>t', ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
-
-require("bufferline").setup()
-
-require("hop").setup()
--- place this in one of your configuration file(s)
-local hop = require('hop')
-vim.keymap.set('n', '<leader>h', hop.hint_char1, {})
-
-require('nvim_comment').setup({line_mapping = "<leader>cl", operator_mapping = "<leader>c"})
-
 local telescope_api = require("telescope.builtin")
 vim.keymap.set('n', '<leader>ff', telescope_api.find_files, {})
 vim.keymap.set('n', '<leader>fg', telescope_api.live_grep, {})
 vim.keymap.set('n', '<leader>fb', telescope_api.buffers, {})
 vim.keymap.set('n', '<leader>fh', telescope_api.help_tags, {})
+
+vim.keymap.set('n', '<leader>t', ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+
+require("bufferline").setup()
+
+local hop = require('hop')
+hop.setup()
+vim.keymap.set('n', '<leader>h', hop.hint_char1, {})
+
+require('nvim_comment').setup({line_mapping = "<leader>cl", operator_mapping = "<leader>c"})
+
 
 require('nvim-treesitter.configs').setup({
       -- A list of parser names, or "all" (the five listed parsers should always be installed)
@@ -212,3 +221,25 @@ end)
 require("ibl").setup({indent = { highlight = highlight }, scope = {enabled = false}})
 
 require("nvim-autopairs").setup()
+
+require("oil").setup()
+vim.keymap.set("n", "<leader>o", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+local bm = require("buffer_manager")
+bm.setup({})
+local bmui = require("buffer_manager.ui")
+vim.keymap.set("n", "<leader>bm", bmui.toggle_quick_menu, {})
+
+require("neoscroll").setup({
+    -- All these keys will be mapped to their corresponding default scrolling animation
+    mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>',
+                '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},
+    hide_cursor = true,          -- Hide cursor while scrolling
+    stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+    respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+    cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+    easing_function = nil,       -- Default easing function
+    pre_hook = nil,              -- Function to run before the scrolling animation starts
+    post_hook = nil,             -- Function to run after the scrolling animation ends
+    performance_mode = false,    -- Disable "Performance Mode" on all buffers.
+})
